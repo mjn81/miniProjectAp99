@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <iomanip>
 using namespace std;
 
 
@@ -21,6 +21,16 @@ dict* search(const string & , dict *);
 void deleteWord(dict *, dict *&);
 
 void deleteSyn(const string &, dict *);
+
+void printWord(dict *);
+
+void printWords(dict *&head){
+    dict *temp = head;
+    while (temp!= nullptr){
+        printWord(temp);
+        temp->nxt = temp;
+    }
+}
 
 int main() {
 
@@ -146,5 +156,15 @@ void deleteSyn(const string &synWord , dict *&word){
     }
 
 
+}
+
+void printWord(dict *word){
+    dict *temp = word->syn;
+    cout<<"word :"<<word->word<<setw(6)<<"synonyms :";
+    while (temp!= nullptr){
+        cout<<temp->word<<setw(3);
+        temp = temp->nxt;
+    }
+    cout<<endl;
 }
 
