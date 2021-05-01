@@ -8,11 +8,14 @@ struct dict{
     dict *nxt;
     dict *syn;
 };
+
 dict* createWord(const string&, dict *);
 
 bool chekExist(dict *, dict *);
 
 void addSyn(dict * , const string &syn);
+
+void sort(dict *&);
 
 void add(dict *, dict *&);
 
@@ -61,6 +64,8 @@ void addSyn(dict *node , const string &syn){
         temp->nxt = s;
     }
 }
+
+void sort(dict *&head){}
 
 void add(dict *addNode , dict *&head){
     dict *node = head;
