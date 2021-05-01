@@ -16,26 +16,24 @@ void addSyn(dict * , const string &syn);
 
 void add(dict *, dict *&);
 
-dict* search(const string & , dict *);
+dict* search(const string & , dict *&);
 
 void deleteWord(dict *, dict *&);
 
-void deleteSyn(const string &, dict *);
+void deleteSyn(const string &, dict *&);
 
 void printWord(dict *);
 
-void printWords(dict *&head){
-    dict *temp = head;
-    while (temp!= nullptr){
-        printWord(temp);
-        temp->nxt = temp;
-    }
-}
+void printWords(dict *&);
 
 void changeWord(dict *,const string &);
 
+void mainMenu();
+
+
 int main() {
 
+    mainMenu();
 
     return 0;
 }
@@ -53,14 +51,14 @@ bool chekExist(dict *node, dict *addNode){
 }
 
 void addSyn(dict *node , const string &syn){
-    dict *temp = node->syn;
+    dict *temp = node->syn , *s = new dict{syn , nullptr , nullptr};
     if (node->syn== nullptr)
-        node->syn->word = syn;
+        node->syn = s;
     else{
         while (temp->nxt != nullptr){
             temp = temp->nxt;
         }
-        temp->word = syn;
+        temp->nxt = s;
     }
 }
 
@@ -163,14 +161,81 @@ void deleteSyn(const string &synWord , dict *&word){
 
 void printWord(dict *word){
     dict *temp = word->syn;
-    cout<<"word :"<<word->word<<setw(6)<<"synonyms :";
+    cout<<"word :"<<word->word<<"\t"<<"synonyms :";
     while (temp!= nullptr){
-        cout<<temp->word<<setw(3);
+        cout<<temp->word<<"  ";
         temp = temp->nxt;
     }
     cout<<endl;
 }
 
+void printWords(dict *&head){
+    dict *temp = head;
+    while (temp!= nullptr){
+        printWord(temp);
+        temp = temp->nxt;
+    }
+}
+
 void changeWord(dict *word , const string &chw){
     word->word = chw;
+}
+
+void mainMenu(){
+    dict *head= nullptr;
+    int inp , synNum;
+    string word;
+    do {
+        cout<<"1-Add Word\n2-Add Synonym\n3-Find Word\n4-Delete Word\n5-Delete Synonym\n"
+            <<"6-Print dictionary\n7-Change name\n8-Write in File\n9-Read From File\n10-Exit\n";
+        cin>>inp;
+        switch (inp) {
+            case 1: {
+                cout << "Enter Word :";
+                cin >> word;
+                cout << "Enter numeber of synonyms :";
+                cin >> synNum;
+                dict *node = createWord(word , nullptr);
+                for (int i = 0; i < synNum; i++) {
+                    cout<<"Enter synonym :";
+                    cin>>word;
+                    addSyn(node,word);
+                }
+                add(node , head);
+            }
+                break;
+            case 2:
+                break;
+            case 3:{
+
+            }
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:{
+                printWords(head);
+            }
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+        }
+
+
+
+
+
+    } while (inp!=10);
+
+
+
+
+
+
+
 }
