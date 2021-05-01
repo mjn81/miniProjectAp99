@@ -20,7 +20,7 @@ dict* search(const string & , dict *);
 
 void deleteWord(dict *, dict *&);
 
-
+void deleteSyn(const string &, dict *);
 
 int main() {
 
@@ -117,3 +117,34 @@ void deleteWord(dict *word , dict *&head){
 
 
 }
+
+void deleteSyn(const string &synWord , dict *&word){
+    dict *temp = word->syn , *pre = nullptr;
+
+    if (temp->word ==synWord && temp->nxt== nullptr){
+        word->syn = nullptr;
+        delete temp;
+        return;
+    }else{
+        while (temp->nxt!= nullptr) {
+            if (temp->word == synWord) {
+                if (temp == word) {
+                    word->syn = temp->nxt;
+                    break;
+                } else if (temp->nxt == nullptr) {
+                    pre->nxt = nullptr;
+                    break;
+                } else {
+                    pre->nxt = temp->nxt;
+                    break;
+                }
+            }
+        pre = temp;
+        temp = temp->nxt;
+        }
+        delete temp;
+    }
+
+
+}
+
