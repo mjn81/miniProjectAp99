@@ -32,6 +32,8 @@ void printWords(dict *&head){
     }
 }
 
+void changeWord(dict *,const string &);
+
 int main() {
 
 
@@ -86,12 +88,13 @@ void add(dict *addNode , dict *&head){
     }
 }
 
-dict* search(const string &word , dict *head){
-    while (head!= nullptr){
-        if (head->word == word){
-            return head;
+dict* search(const string &word , dict *&head){
+    dict *temp = head;
+    while (temp!= nullptr){
+        if (temp->word == word){
+            return temp;
         }
-        head = head->nxt;
+        temp = temp->nxt;
     }
     cout<<"no such word exist!!";
     return nullptr;
@@ -168,3 +171,6 @@ void printWord(dict *word){
     cout<<endl;
 }
 
+void changeWord(dict *word , const string &chw){
+    word->word = chw;
+}
