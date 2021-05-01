@@ -12,17 +12,18 @@ dict* createWord(const string&, dict *);
 
 bool chekExist(dict *, dict *);
 
-void addSyn(dict *);
+void addSyn(dict * , const string &syn);
 
 void add(dict *, dict *&);
+
+dict* search(const string & , dict *);
+
+void deleteWord(dict *, dict *&);
+
 
 
 int main() {
 
-    dict *head= nullptr;
-    dict *word1 = createWord("w1" , nullptr);
-    dict *w2 = createWord("w2" , nullptr);
-    dict *w3 = createWord("w3" , nullptr);
 
     return 0;
 }
@@ -38,6 +39,7 @@ bool chekExist(dict *node, dict *addNode){
     }
     return false;
 }
+
 void addSyn(dict *node , const string &syn){
     dict *temp = node->syn;
     if (node->syn== nullptr)
@@ -74,4 +76,44 @@ void add(dict *addNode , dict *&head){
     }
 }
 
+dict* search(const string &word , dict *head){
+    while (head!= nullptr){
+        if (head->word == word){
+            return head;
+        }
+        head = head->nxt;
+    }
+    cout<<"no such word exist!!";
+    return nullptr;
+}
 
+void deleteWord(dict *word , dict *&head){
+    dict *current = head , *pre;
+    if (head == word && head->nxt== nullptr){
+        delete head;
+        return;
+    }
+    else{
+        while (current->nxt!= nullptr){
+            if (current->word == word->word) {
+                if (current == head){
+                    head = head->nxt;
+                    break;
+                }
+                else if (current->nxt== nullptr){
+                    pre->nxt= nullptr;
+                    break;
+                }
+                else{
+                    pre->nxt = current->nxt;
+                    break;
+                }
+            }
+            pre = current;
+            current = current->nxt;
+        }
+        delete current;
+    }
+
+
+}
