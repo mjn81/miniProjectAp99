@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include <iostream>
 using namespace std;
 
@@ -22,9 +24,11 @@ void add(dict *, dict *&);
 
 dict* search(const string & , dict *&);
 
+void dynamicDelete(dict *&);
+
 void deleteWord(dict *, dict *&);
 
-void deleteSyn(const string &, dict *&);
+void deleteSyn(const string &, dict *& , dict *&);
 
 void printWord(dict *);
 
@@ -67,7 +71,8 @@ void addSyn(dict *node , const string &syn){
 }
 
 int checkWord(const string &a , const string &b){
-    int length = a.length()<b.length() ? a.length() : b.length();
+    int al = a.length() , bl = b.length();
+    int length = al<bl ? al : bl;
 
     for (int i = 0; i <length ; ++i) {
         if (a[i]>b[i]){
@@ -76,9 +81,9 @@ int checkWord(const string &a , const string &b){
             return -1;
         }
     }
-    if (a.length()>b.length()){
+    if (al>bl){
         return 1;
-    }else if (a.length()<b.length()){
+    }else if (al<bl){
         return -1;
     }
     return 0;
@@ -142,8 +147,17 @@ dict* search(const string &word , dict *&head){
     return nullptr;
 }
 
+void dynamicDelete(dict *&head){
+    dict *temp , *Head=head;
+    while (Head!= nullptr){
+        temp = Head;
+        Head = Head->nxt;
+        delete temp;
+    }
+}
+
 void deleteWord(dict *word , dict *&head){
-    dict *current = head , *pre = nullptr;
+    dict *current = head , *pre= nullptr;
     if (head == word && head->nxt== nullptr && chekExist(word , head)){
         head= nullptr;
         delete current;
@@ -168,23 +182,24 @@ void deleteWord(dict *word , dict *&head){
             pre = current;
             current = current->nxt;
         }
+        dynamicDelete(current->syn);
         delete current;
     }
 
 
 }
 
-void deleteSyn(const string &synWord , dict *&word){
-    dict *temp = word->syn , *pre = nullptr;
+void deleteSyn(const string &synWord , dict *&word , dict*&head){
+    dict *temp = word->syn , *pre= nullptr;
     bool flag = false;
-    if (temp->word ==synWord && temp->nxt== nullptr){
-        word->syn = nullptr;
+    if ( temp->word ==synWord && temp->nxt== nullptr){
+        deleteWord(word,head);
         delete temp;
         return;
     }else{
-        while (temp->nxt!= nullptr) {
+        while (temp!= nullptr) {
             if (temp->word == synWord) {
-                if (temp == word) {
+                if (temp == word->syn) {
                     word->syn = temp->nxt;
                     flag = true;
                     break;
@@ -298,7 +313,7 @@ void mainMenu(){
                 if (temp!= nullptr){
                     cout<<"Enter synonym you want to delete :";
                     cin>>word;
-                    deleteSyn(word , temp);
+                    deleteSyn(word , temp , head);
                 }
                 break;
             }
@@ -332,3 +347,4 @@ void mainMenu(){
 
 
 }
+#pragma clang diagnostic pop
