@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip>
 using namespace std;
 
 
@@ -157,7 +156,7 @@ void deleteWord(dict *word , dict *&head){
                     break;
                 }
                 else if (current->nxt== nullptr){
-                    pre->nxt= nullptr;
+                    current= nullptr;
                     break;
                 }
                 else{
@@ -176,7 +175,7 @@ void deleteWord(dict *word , dict *&head){
 
 void deleteSyn(const string &synWord , dict *&word){
     dict *temp = word->syn , *pre = nullptr;
-
+    bool flag = false;
     if (temp->word ==synWord && temp->nxt== nullptr){
         word->syn = nullptr;
         delete temp;
@@ -186,27 +185,32 @@ void deleteSyn(const string &synWord , dict *&word){
             if (temp->word == synWord) {
                 if (temp == word) {
                     word->syn = temp->nxt;
+                    flag = true;
                     break;
                 } else if (temp->nxt == nullptr) {
                     pre->nxt = nullptr;
+                    flag = true;
                     break;
                 } else {
                     pre->nxt = temp->nxt;
+                    flag = true;
                     break;
                 }
             }
         pre = temp;
         temp = temp->nxt;
         }
-        delete temp;
+        if (flag) {
+            delete temp;
+            return;
+        }
     }
-
-
+    cout<<"\nno such synonym exist!!\n\n";
 }
 
 void printWord(dict *word){
     dict *temp = word->syn;
-    cout<<"word :"<<word->word<<"\t"<<"synonyms :";
+    cout<<"word :"<<word->word<<"    "<<"synonyms :";
     while (temp!= nullptr){
         cout<<temp->word<<"  ";
         temp = temp->nxt;
@@ -281,18 +285,37 @@ void mainMenu(){
                 cin>>word;
                 dict *temp = search(word , head);
                 if (temp!= nullptr){
-                    printWord(temp);
+                    deleteWord(temp , head);
+                    cout<<"Word deleted!";
                 }
                 break;
             }
-            case 5:
+            case 5:{
+                cout<<"Enter Word :";
+                cin>>word;
+                dict *temp = search(word , head);
+                if (temp!= nullptr){
+                    cout<<"Enter synonym you want to delete :";
+                    cin>>word;
+                    deleteSyn(word , temp);
+                }
                 break;
+            }
             case 6:{
                 printWords(head);
                 break;
             }
-            case 7:
+            case 7: {
+                cout<<"Enter Word you want to change dictation :";
+                cin>>word;
+                dict *temp = search(word ,head);
+                if (temp!= nullptr) {
+                    cout << "Enter new word to replace :";
+                    cin >> word;
+                    changeWord(temp , word);
+                }
                 break;
+            }
             case 8:
                 break;
             case 9:
