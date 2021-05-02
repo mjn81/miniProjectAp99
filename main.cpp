@@ -145,13 +145,13 @@ dict* search(const string &word , dict *&head){
 
 void deleteWord(dict *word , dict *&head){
     dict *current = head , *pre;
-    if (head == word && head->nxt== nullptr){
+    if (head == word && head->nxt== nullptr && chekExist(word , head)){
         delete head;
         return;
     }
     else{
         while (current->nxt!= nullptr){
-            if (current->word == word->word) {
+            if (chekExist(current , word)) {
                 if (current == head){
                     head = head->nxt;
                     break;
@@ -238,7 +238,7 @@ void mainMenu(){
             case 1: {
                 cout << "Enter Word :";
                 cin >> word;
-                cout << "Enter numeber of synonyms :";
+                cout << "Enter number of synonyms :";
                 cin >> synNum;
                 dict *node = createWord(word , nullptr);
                 for (int i = 0; i < synNum; i++) {
@@ -251,20 +251,46 @@ void mainMenu(){
                 sort(head);
                 break;
             }
-            case 2:
+            case 2: {
+                cout<<"Enter Word :";
+                cin>>word;
+                dict *temp = search(word , head);
+                if (temp!= nullptr){
+                    cout<<"Enter number of synonyms to add :";
+                    cin>>synNum;
+                    for (int i = 0; i < synNum; ++i) {
+                        cout<<"Enter Synonym :";
+                        cin>>word;
+                        addSyn(temp , word);
+                    }
+                    sort(temp->syn);
+                }
                 break;
-            case 3:{
-
             }
+            case 3:{
+                cout<<"Enter Word :";
+                cin>>word;
+                dict *temp = search(word , head);
+                if (temp!= nullptr){
+                    printWord(temp);
+                }
                 break;
-            case 4:
+            }
+            case 4:{
+                cout<<"Enter Word :";
+                cin>>word;
+                dict *temp = search(word , head);
+                if (temp!= nullptr){
+                    printWord(temp);
+                }
                 break;
+            }
             case 5:
                 break;
             case 6:{
                 printWords(head);
-            }
                 break;
+            }
             case 7:
                 break;
             case 8:
