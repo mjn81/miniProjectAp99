@@ -15,6 +15,8 @@ bool chekExist(dict *, dict *);
 
 void addSyn(dict * , const string &syn);
 
+int checkWord(const string &, const string &);
+
 void sort(dict *&);
 
 void add(dict *, dict *&);
@@ -65,7 +67,45 @@ void addSyn(dict *node , const string &syn){
     }
 }
 
-void sort(dict *&head){}
+int checkWord(const string &a , const string &b){
+    int length = a.length()<b.length() ? a.length() : b.length();
+
+    for (int i = 0; i <length ; ++i) {
+        if (a[i]>b[i]){
+            return 1;
+        }else if (a[i]<b[i]){
+            return -1;
+        }
+    }
+    if (a.length()>b.length()){
+        return 1;
+    }else if (a.length()<b.length()){
+        return -1;
+    }
+    return 0;
+}
+
+void sort(dict *&head){
+    dict *node , *temp;
+    string word;
+    bool flag = true;
+    while (flag){
+        node= head;
+        flag = false;
+        while (node->nxt!= nullptr){
+            if (checkWord(node->word , node->nxt->word)==1){
+                temp = node->syn;
+                word= node->word;
+                node->word = node->nxt->word;
+                node->nxt->word = word;
+                node->syn = node->nxt->syn;
+                node->nxt->syn = temp;
+                flag= true;
+            }
+            node = node->nxt;
+        }
+    }
+    }
 
 void add(dict *addNode , dict *&head){
     dict *node = head;
@@ -191,7 +231,7 @@ void mainMenu(){
     int inp , synNum;
     string word;
     do {
-        cout<<"1-Add Word\n2-Add Synonym\n3-Find Word\n4-Delete Word\n5-Delete Synonym\n"
+        cout<<"\n1-Add Word\n2-Add Synonym\n3-Find Word\n4-Delete Word\n5-Delete Synonym\n"
             <<"6-Print dictionary\n7-Change name\n8-Write in File\n9-Read From File\n10-Exit\n";
         cin>>inp;
         switch (inp) {
@@ -206,9 +246,11 @@ void mainMenu(){
                     cin>>word;
                     addSyn(node,word);
                 }
+                sort((node->syn) );
                 add(node , head);
-            }
+                sort(head);
                 break;
+            }
             case 2:
                 break;
             case 3:{
