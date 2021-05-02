@@ -143,20 +143,21 @@ dict* search(const string &word , dict *&head){
 }
 
 void deleteWord(dict *word , dict *&head){
-    dict *current = head , *pre;
+    dict *current = head , *pre = nullptr;
     if (head == word && head->nxt== nullptr && chekExist(word , head)){
-        delete head;
+        head= nullptr;
+        delete current;
         return;
     }
     else{
-        while (current->nxt!= nullptr){
+        while (current!= nullptr){
             if (chekExist(current , word)) {
                 if (current == head){
                     head = head->nxt;
                     break;
                 }
                 else if (current->nxt== nullptr){
-                    current= nullptr;
+                    pre->nxt= nullptr;
                     break;
                 }
                 else{
@@ -271,7 +272,7 @@ void mainMenu(){
                 }
                 break;
             }
-            case 3:{
+            case 3: {
                 cout<<"Enter Word :";
                 cin>>word;
                 dict *temp = search(word , head);
@@ -280,7 +281,7 @@ void mainMenu(){
                 }
                 break;
             }
-            case 4:{
+            case 4: {
                 cout<<"Enter Word :";
                 cin>>word;
                 dict *temp = search(word , head);
@@ -290,7 +291,7 @@ void mainMenu(){
                 }
                 break;
             }
-            case 5:{
+            case 5: {
                 cout<<"Enter Word :";
                 cin>>word;
                 dict *temp = search(word , head);
@@ -301,7 +302,7 @@ void mainMenu(){
                 }
                 break;
             }
-            case 6:{
+            case 6: {
                 printWords(head);
                 break;
             }
@@ -321,10 +322,6 @@ void mainMenu(){
             case 9:
                 break;
         }
-
-
-
-
 
     } while (inp!=10);
 
