@@ -37,22 +37,9 @@ void printWords(dict *&);
 
 void changeWord(dict *,const string &);
 
-void writeFileDict(dict *&linkedList){
-    ofstream writer;
-    writer.open("test.txt" );
-    dict *node = linkedList;
-    dict *syn;
-    while (node!= nullptr){
-        syn = node->syn;
-        writer<<node->word<<"|";
-        while (syn!= nullptr){
-            writer<<syn->word<<"|";
-            syn = syn->nxt;
-        }
-        node = node->nxt;
-        writer<<"\n";
-    }
-}
+void writeFileDict(dict *&);
+
+void readFileDict(dict *&,const string &);
 
 void mainMenu();
 
@@ -262,6 +249,50 @@ void printWords(dict *&head){
 
 void changeWord(dict *word , const string &chw){
     word->word = chw;
+}
+
+void writeFileDict(dict *&linkedList){
+    ofstream writer;
+    writer.open("outPut.txt");
+    dict *node = linkedList;
+    dict *syn;
+    while (node!= nullptr){
+        syn = node->syn;
+        writer<<node->word<<"|";
+        while (syn!= nullptr){
+            writer<<syn->word<<"|";
+            syn = syn->nxt;
+        }
+        node = node->nxt;
+        writer<<"\n";
+    }
+}
+
+void readFileDict(dict *&linkedList,const string &address){
+    ifstream reader;
+    reader.open(address);
+    dict *node = nullptr;
+    string line , word;
+    int c=0;
+    while (!reader.eof()){
+        getline(reader , line);
+        c=0;
+        for (auto x : line) {
+            if (x == '|') {
+                if (c==0) {
+                    node = createWord(word , nullptr);
+                    add(node , linkedList);
+                } else {
+                    addSyn(node , word);
+                }
+                word = "";
+                c++;
+            } else {
+                word += x;
+            }
+        }
+    }
+    printWords(linkedList);
 }
 
 void mainMenu(){
