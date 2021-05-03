@@ -257,7 +257,7 @@ void writeFileDict(dict *&linkedList){
 
 void readFileDict(dict *&linkedList,const string &address){
     ifstream reader;
-    reader.open("outPut.txt");
+    reader.open(address);
     dict *node = nullptr;
     string line , word;
     int c=0;
