@@ -1,6 +1,7 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 
@@ -35,6 +36,23 @@ void printWord(dict *);
 void printWords(dict *&);
 
 void changeWord(dict *,const string &);
+
+void writeFileDict(dict *&linkedList){
+    ofstream writer;
+    writer.open("test.txt" );
+    dict *node = linkedList;
+    dict *syn;
+    while (node!= nullptr){
+        syn = node->syn;
+        writer<<node->word<<"|";
+        while (syn!= nullptr){
+            writer<<syn->word<<"|";
+            syn = syn->nxt;
+        }
+        node = node->nxt;
+        writer<<"\n";
+    }
+}
 
 void mainMenu();
 
@@ -314,6 +332,7 @@ void mainMenu(){
                     cout<<"Enter synonym you want to delete :";
                     cin>>word;
                     deleteSyn(word , temp , head);
+                    cout<<"Synonym deleted!!";
                 }
                 break;
             }
@@ -332,19 +351,13 @@ void mainMenu(){
                 }
                 break;
             }
-            case 8:
+            case 8: {
                 break;
-            case 9:
+            }
+            case 9: {
                 break;
+            }
         }
 
     } while (inp!=10);
-
-
-
-
-
-
-
 }
-#pragma clang diagnostic pop
