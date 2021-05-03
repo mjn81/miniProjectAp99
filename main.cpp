@@ -390,6 +390,7 @@ void mainMenu(){
                     cout << "Enter new word to replace :";
                     cin >> word;
                     changeWord(temp , word);
+                    cout<<"Changing successful";
                 }else{
                     cout<<"no such word exist!!";
                 }
