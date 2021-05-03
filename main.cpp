@@ -122,18 +122,6 @@ void add(dict *addNode , dict *&head){
         head= addNode;
     else {
         while (node->nxt != nullptr) {
-            if (chekExist(node,addNode)){
-                if (node->syn== nullptr)
-                    node->syn = addNode->syn;
-                else {
-                    dict *syn = node->syn;
-                    while (syn->nxt != nullptr) {
-                        syn = syn->nxt;
-                    }
-                    syn->nxt = addNode->syn;
-                }
-                return;
-            }
             node = node->nxt;
         }
         node->nxt = addNode;
@@ -310,16 +298,19 @@ void mainMenu(){
             case 1: {
                 cout << "Enter Word :";
                 cin >> word;
+                dict *node = search(word , head);
                 cout << "Enter number of synonyms :";
                 cin >> synNum;
-                dict *node = createWord(word , nullptr);
+                if (node== nullptr) {
+                    node = createWord(word, nullptr);
+                    add(node, head);
+                }
                 for (int i = 0; i < synNum; i++) {
                     cout<<"Enter synonym :";
                     cin>>word;
                     addSyn(node,word);
                 }
                 sort((node->syn) );
-                add(node , head);
                 sort(head);
                 break;
             }
