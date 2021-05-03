@@ -148,7 +148,6 @@ dict* search(const string &word , dict *&head){
         }
         temp = temp->nxt;
     }
-    cout<<"no such word exist!!";
     return nullptr;
 }
 
@@ -270,7 +269,7 @@ void writeFileDict(dict *&linkedList){
 
 void readFileDict(dict *&linkedList,const string &address){
     ifstream reader;
-    reader.open(address);
+    reader.open("outPut.txt");
     dict *node = nullptr;
     string line , word;
     int c=0;
@@ -280,8 +279,11 @@ void readFileDict(dict *&linkedList,const string &address){
         for (auto x : line) {
             if (x == '|') {
                 if (c==0) {
-                    node = createWord(word , nullptr);
-                    add(node , linkedList);
+                    node = search(word , linkedList);
+                    if (node== nullptr) {
+                        node = createWord(word, nullptr);
+                        add(node, linkedList);
+                    }
                 } else {
                     addSyn(node , word);
                 }
@@ -291,7 +293,9 @@ void readFileDict(dict *&linkedList,const string &address){
                 word += x;
             }
         }
+        sort(node->syn);
     }
+    sort(linkedList);
 }
 
 void mainMenu(){
@@ -332,6 +336,8 @@ void mainMenu(){
                         addSyn(temp , word);
                     }
                     sort(temp->syn);
+                }else{
+                    cout<<"no such word exist!!";
                 }
                 break;
             }
@@ -341,6 +347,8 @@ void mainMenu(){
                 dict *temp = search(word , head);
                 if (temp!= nullptr){
                     printWord(temp);
+                }else{
+                    cout<<"no such word exist!!";
                 }
                 break;
             }
@@ -351,6 +359,8 @@ void mainMenu(){
                 if (temp!= nullptr){
                     deleteWord(temp , head);
                     cout<<"Word deleted!";
+                }else{
+                    cout<<"no such word exist!!";
                 }
                 break;
             }
@@ -363,6 +373,8 @@ void mainMenu(){
                     cin>>word;
                     deleteSyn(word , temp , head);
                     cout<<"Synonym deleted!!";
+                }else{
+                    cout<<"no such word exist!!";
                 }
                 break;
             }
@@ -378,6 +390,8 @@ void mainMenu(){
                     cout << "Enter new word to replace :";
                     cin >> word;
                     changeWord(temp , word);
+                }else{
+                    cout<<"no such word exist!!";
                 }
                 break;
             }
