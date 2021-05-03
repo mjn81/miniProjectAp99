@@ -292,7 +292,6 @@ void readFileDict(dict *&linkedList,const string &address){
             }
         }
     }
-    printWords(linkedList);
 }
 
 void mainMenu(){
@@ -383,9 +382,23 @@ void mainMenu(){
                 break;
             }
             case 8: {
+                writeFileDict(head);
+                cout<<"\nwriting successful!!\n";
                 break;
             }
             case 9: {
+                cout<<"Enter fileName :";
+                cin>>word;
+                readFileDict(head , word);
+                printWords(head);
+                break;
+            }
+            case 10: {
+                cout<<"Do you want to save dictionary before you leave?(y/n)\n";
+                cin>>word;
+                if(word =="y"){
+                    writeFileDict(head);
+                }
                 break;
             }
         }
