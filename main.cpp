@@ -258,7 +258,7 @@ void writeFileDict(dict *&linkedList){
 void readFileDict(dict *&linkedList,const string &address){
     ifstream reader;
     reader.open(address);
-    dict *node = nullptr;
+    dict *node = nullptr , *syn;
     string line , word;
     int c=0;
     while (!reader.eof()){
@@ -273,7 +273,10 @@ void readFileDict(dict *&linkedList,const string &address){
                         add(node, linkedList);
                     }
                 } else {
-                    addSyn(node , word);
+                    syn  = search(word , node->syn);
+                    if (syn ==nullptr) {
+                        addSyn(node, word);
+                    }
                 }
                 word = "";
                 c++;
