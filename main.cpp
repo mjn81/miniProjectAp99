@@ -287,7 +287,7 @@ void readFileDict(dict *&linkedList,const string &address){
 }
 
 void mainMenu(){
-    dict *head= nullptr;
+    dict *head= nullptr , *syn;
     int inp , synNum;
     string word;
     do {
@@ -301,6 +301,7 @@ void mainMenu(){
                 dict *node = search(word , head);
                 cout << "Enter number of synonyms :";
                 cin >> synNum;
+
                 if (node== nullptr) {
                     node = createWord(word, nullptr);
                     add(node, head);
@@ -308,7 +309,10 @@ void mainMenu(){
                 for (int i = 0; i < synNum; i++) {
                     cout<<"Enter synonym :";
                     cin>>word;
-                    addSyn(node,word);
+                     syn = search(word  , node->syn);
+                    if (syn == nullptr) {
+                        addSyn(node, word);
+                    }
                 }
                 sort((node->syn) );
                 sort(head);
@@ -324,7 +328,10 @@ void mainMenu(){
                     for (int i = 0; i < synNum; ++i) {
                         cout<<"Enter Synonym :";
                         cin>>word;
-                        addSyn(temp , word);
+                        syn = search(word  , temp->syn);
+                        if (syn == nullptr) {
+                            addSyn(temp, word);
+                        }
                     }
                     sort(temp->syn);
                 }else{
