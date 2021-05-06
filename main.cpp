@@ -300,12 +300,12 @@ void mainMenu() {
             case 1: {
                 cout << "Enter Word :";
                 cin >> word;
-                dict *node = search(word, head);
                 cout << "Enter number of synonyms :";
                 cin >> synNum;
                 if (synNum == 0) {
                     break;
                 }
+                dict *node = search(word, head);
                 if (node == nullptr) {
                     node = createWord(word, nullptr);
                     add(node, head);
