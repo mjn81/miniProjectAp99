@@ -6,13 +6,13 @@
 
 using namespace std;
 
-
 struct dict {
     string word;
     dict *nxt;
     dict *syn;
 };
 
+//prototypes
 dict *createWord(const string &, dict *);
 
 bool chekExist(dict *, dict *);
@@ -45,7 +45,6 @@ void readFileDict(dict *&, const string &);
 
 void mainMenu();
 
-
 int main() {
 
     mainMenu();
@@ -58,6 +57,7 @@ dict *createWord(const string &word, dict *syn) {
     return node;
 }
 
+//if word_ptr exists returns true else returns false (only for words)
 bool chekExist(dict *node, dict *addNode) {
     if (node->word == addNode->word) {
         return true;
@@ -65,11 +65,14 @@ bool chekExist(dict *node, dict *addNode) {
     return false;
 }
 
+//adds a synonym(no existence checking)
 void addSyn(dict *node, const string &syn) {
     dict *temp = node->syn, *s = new dict{syn, nullptr, nullptr};
+    //if it doesnt have a syn
     if (node->syn == nullptr)
         node->syn = s;
     else {
+        //it has a list of syn
         while (temp->nxt != nullptr) {
             temp = temp->nxt;
         }
@@ -77,10 +80,18 @@ void addSyn(dict *node, const string &syn) {
     }
 }
 
+//compares 2 word if 1st bigger returns 1 if equal 0 else -1 (const ref for efficiency)
 int checkWord(const string &a, const string &b) {
-    int al = a.length(), bl = b.length();
+    int al = a.length(), bl = b.length();//a length , b length
     int length = al < bl ? al : bl;
 
+    // if length a is bigger returns 1 , else -1
+    if (al > bl) {
+        return 1;
+    } else if (al < bl) {
+        return -1;
+    }
+    // check words char by char
     for (int i = 0; i < length; ++i) {
         if (a[i] > b[i]) {
             return 1;
@@ -88,18 +99,16 @@ int checkWord(const string &a, const string &b) {
             return -1;
         }
     }
-    if (al > bl) {
-        return 1;
-    } else if (al < bl) {
-        return -1;
-    }
+
     return 0;
 }
 
+//sorts any head of any part (both syn & word)
 void sort(dict *&head) {
     dict *node, *temp;
     string word;
     bool flag = true;
+    //bubble sorting
     while (flag) {
         node = head;
         flag = false;
@@ -118,6 +127,7 @@ void sort(dict *&head) {
     }
 }
 
+//adds word(no existence checking)
 void add(dict *addNode, dict *&head) {
     dict *node = head;
     if (node == nullptr)
@@ -130,6 +140,7 @@ void add(dict *addNode, dict *&head) {
     }
 }
 
+//finds any word in any head(both syn & words)
 dict *search(const string &word, dict *&head) {
     dict *temp = head;
     while (temp != nullptr) {
@@ -141,6 +152,7 @@ dict *search(const string &word, dict *&head) {
     return nullptr;
 }
 
+//deletes all syn nodes
 void dynamicDelete(dict *&head) {
     dict *temp, *Head = head;
     while (Head != nullptr) {
@@ -150,29 +162,29 @@ void dynamicDelete(dict *&head) {
     }
 }
 
+//deletes words
 void deleteWord(dict *word, dict *&head) {
     dict *current = head, *pre = nullptr;
-    if (head == word && head->nxt == nullptr && chekExist(word, head)) {
+    if (head == word && head->nxt == nullptr && chekExist(word, head)) {//only head exists & matches with input_word
         head = nullptr;
         delete current;
         return;
     } else {
         while (current != nullptr) {
-            if (chekExist(current, word)) {
+            if (chekExist(current, word)) {//if word is 1st node
                 if (current == head) {
                     head = head->nxt;
-                    break;
-                } else if (current->nxt == nullptr) {
+                } else if (current->nxt == nullptr) {//if middle node
                     pre->nxt = nullptr;
-                    break;
-                } else {
+                } else {//if end node
                     pre->nxt = current->nxt;
-                    break;
                 }
+                break;
             }
             pre = current;
             current = current->nxt;
         }
+        // deletes syn node
         dynamicDelete(current->syn);
         delete current;
     }
@@ -180,33 +192,30 @@ void deleteWord(dict *word, dict *&head) {
 
 }
 
+//deletes syn by input_word(no existence checking)
 void deleteSyn(const string &synWord, dict *&word, dict *&head) {
-    dict *temp = word->syn, *pre = nullptr;
+    dict *temp = word->syn, *pre = nullptr;//temp = head of syn linked list
     bool flag = false;
-    if (temp->word == synWord && temp->nxt == nullptr) {
+    if (temp->word == synWord && temp->nxt == nullptr) {//if only head and head equals deletes the word itself
         deleteWord(word, head);
         delete temp;
         return;
     } else {
         while (temp != nullptr) {
             if (temp->word == synWord) {
-                if (temp == word->syn) {
+                if (temp == word->syn) {//if node is 1st
                     word->syn = temp->nxt;
-                    flag = true;
-                    break;
-                } else if (temp->nxt == nullptr) {
+                } else if (temp->nxt == nullptr) {//if node is middle
                     pre->nxt = nullptr;
-                    flag = true;
-                    break;
-                } else {
+                } else {//if node is end
                     pre->nxt = temp->nxt;
-                    flag = true;
-                    break;
                 }
+                flag = true;
+                break;
             }
             pre = temp;
             temp = temp->nxt;
-        }
+        }//flag to stop printing not exist message
         if (flag) {
             delete temp;
             return;
@@ -215,6 +224,7 @@ void deleteSyn(const string &synWord, dict *&word, dict *&head) {
     cout << "\nno such synonym exist!!\n\n";
 }
 
+//print one
 void printWord(dict *word) {
     dict *temp = word->syn;
     cout << "word :" << word->word << "    " << "synonyms :";
@@ -225,6 +235,7 @@ void printWord(dict *word) {
     cout << endl;
 }
 
+//print all
 void printWords(dict *&head) {
     dict *temp = head;
     while (temp != nullptr) {
@@ -233,6 +244,7 @@ void printWords(dict *&head) {
     }
 }
 
+//change word_dictation
 void changeWord(dict *word, const string &chw) {
     word->word = chw;
 }
@@ -287,6 +299,8 @@ void readFileDict(dict *&linkedList, const string &address) {
     }
     sort(linkedList);
 }
+
+//// main menu for printing messages and so....
 
 void mainMenu() {
     dict *head = nullptr, *syn;
