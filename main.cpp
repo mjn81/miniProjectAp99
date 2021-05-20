@@ -85,12 +85,7 @@ int checkWord(const string &a, const string &b) {
     int al = a.length(), bl = b.length();//a length , b length
     int length = al < bl ? al : bl;
 
-    // if length a is bigger returns 1 , else -1
-    if (al > bl) {
-        return 1;
-    } else if (al < bl) {
-        return -1;
-    }
+
     // check words char by char
     for (int i = 0; i < length; ++i) {
         if (a[i] > b[i]) {
@@ -100,6 +95,12 @@ int checkWord(const string &a, const string &b) {
         }
     }
 
+    // if length a is bigger returns 1 , else -1
+    if (al > bl) {
+        return 1;
+    } else if (al < bl) {
+        return -1;
+    }
     return 0;
 }
 
