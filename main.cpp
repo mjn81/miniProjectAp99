@@ -205,9 +205,9 @@ void deleteSyn(const string &synWord, dict *&word, dict *&head) {
             if (temp->word == synWord) {
                 if (temp == word->syn) {//if node is 1st
                     word->syn = temp->nxt;
-                } else if (temp->nxt == nullptr) {//if node is middle
+                } else if (temp->nxt == nullptr) {//if node is end
                     pre->nxt = nullptr;
-                } else {//if node is end
+                } else {//if node is middle
                     pre->nxt = temp->nxt;
                 }
                 flag = true;
