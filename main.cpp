@@ -82,7 +82,7 @@ void addSyn(dict *node, const string &syn) {
 
 //compares 2 word if 1st bigger returns 1 if equal 0 else -1 (const ref for efficiency)
 int checkWord(const string &a, const string &b) {
-    int al = a.length(), bl = b.length();//a length , b length
+    int al = a.length(), bl = b.length();//a length ,b length
     int length = al < bl ? al : bl;
 
 
